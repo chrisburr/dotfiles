@@ -1,0 +1,6 @@
+[Unit]
+Description=Letsencrypt manual renewal
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/letsencrypt certonly --agree-tos --renew-by-default --email chrisburr73+letsencrypt@gmail.com --webroot -w /usr/share/nginx/html/ -d chrisburr.me
