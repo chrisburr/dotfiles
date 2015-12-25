@@ -1,0 +1,79 @@
+#!/usr/bin/env expect
+# Based on https://gist.github.com/OmeGak/9530124
+
+set timeout -1
+match_max 100000
+
+# Aquire and validate any arguments
+set username [lindex $argv 0]
+set password [lindex $argv 1]
+set debug [lindex $argv 1]
+
+if { $username == "" || $password == "" }  {
+  puts "Usage: <username> <password>\n"
+  exit 1
+}
+
+# If no debug flag is pass supress output
+if { $debug == "" } {
+    log_user 0
+}
+
+# Ensure a keytab doesn't currently exist
+if {[file exists keytab]} {
+    puts "Removing previous keytab file\n"
+    system "rm keytab"
+    expect eof
+}
+
+# Make the keytab
+spawn ktutil
+
+expect "ktutil:  "
+send -- "addent -password -p $username@CERN.CH -k 1 -e aes256-cts\r"
+expect "Password for $username@CERN.CH: "
+send -- "$password\r"
+
+expect "ktutil:  "
+send -- "addent -password -p $username@CERN.CH -k 1 -e arcfour-hmac-md5\r"
+expect "Password for $username@CERN.CH: "
+send -- "$password\r"
+
+expect "ktutil:  "
+send -- "wkt keytab\r"
+
+expect "ktutil:  "
+send -- "q\r"
+expect eof
+
+# Try to obtain a Kerberos token to test the keytab
+spawn kinit -kt keytab $username
+expect eof
+
+lassign [wait] pid spawnid os_error_flag return_code
+
+if { "$return_code" == "0" }  {
+    puts "Successfully obtained Kerberos token\n"
+} else {
+    puts "ERROR: Failed to obtain Kerberos token\n"
+    exit 1
+}
+
+# Try to obtain an AFS token to test the keytab
+spawn aklog
+expect eof
+
+lassign [wait] pid spawnid os_error_flag return_code
+
+if { "$return_code" == "0" }  {
+    puts "Successfully obtained AFS token\n"
+} else {
+    puts "ERROR: Failed to obtain AFS token\n"
+    exit 1
+}
+
+# Copy the keytab file to secret folder
+file mkdir ~/.secret
+system "chmod -R 700 ~/.secret/"
+system "mv keytab ~/.secret/keytab"
+system "chmod 400 ~/.secret/keytab"
