@@ -3,4 +3,4 @@ Description=Create new Kerberos and AFS credentials
 
 [Service]
 Type=oneshot
-ExecStart=/bin/zsh -c "kinit -kt ~/.secret/keytab cburr && aklog"
+ExecStart=/bin/zsh -c "kinit -kt ~/.secret/keytab {username} && aklog"
