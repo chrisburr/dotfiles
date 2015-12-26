@@ -1,6 +1,5 @@
-# Example usage
+#!/bin/bash -e
 
-```bash
 ./install_packages.sh
 ./install_pacaur.sh
 ./install_lastpass.sh
@@ -10,4 +9,3 @@
 ./install_conda.sh
 ./install_oh_my_zsh.sh
 ./install_dotfiles.sh
-```
