@@ -3,4 +3,4 @@ Description=Letsencrypt manual renewal
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/letsencrypt certonly --agree-tos --renew-by-default --email chrisburr73+letsencrypt@gmail.com --webroot -w /usr/share/nginx/html/ -d chrisburr.me
+ExecStart=/usr/bin/letsencrypt certonly --agree-tos --renew-by-default --email $(echo Y2hyaXNidXJyNzNAZ29vZ2xlbWFpbC5jb20K | base64 --decode) --webroot -w /usr/share/nginx/html/ -d chrisburr.me

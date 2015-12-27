@@ -70,12 +70,6 @@ unset NUM_CORES
 ##############################################################################
 # Misc
 ##############################################################################
-# Login to lxplus using kerberos token
-# alias lxplus="ssh cburr@$(dig +short lxplus.cern.ch | sed -n '2 p')"
-alias lxplus="sshpass -p \$(lpass show --password cern.ch) ssh cburr@lxplus.cern.ch"
-alias arch_openstack="sshpass -p \$(lpass show --password cern.ch) ssh -t -XY cburr@lxplus.cern.ch ssh -i \"~/archlinux_openstack.key\" arch -XY"
-alias afs_login="lpass show --password cern.ch | kinit cburr@CERN.CH && aklog"
-alias cern_password="lpass show --password cern.ch | xclip -selection \"clipboard\""
 
 export PATH=~/miniconda/bin:$PATH
 
