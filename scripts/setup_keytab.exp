@@ -47,7 +47,7 @@ send -- "q\r"
 expect eof
 
 # Try to obtain a Kerberos token to test the keytab
-spawn kinit -kt keytab $username
+spawn kinit -kt keytab $username@CERN.CH
 expect eof
 
 lassign [wait] pid spawnid os_error_flag return_code
