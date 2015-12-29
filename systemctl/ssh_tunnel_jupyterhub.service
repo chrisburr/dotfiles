@@ -1,0 +1,13 @@
+[Unit]
+Description=Use a reverse ssh tunnel to expose the local JupyterHub server
+After=network.target
+
+[Service]
+User=cburr
+Type=oneshot
+ExecStart=/bin/true
+ExecStartPost=/usr/bin/autossh -N -M 10986 -R 6606:localhost:8000 chrisburr.me
+
+[Install]
+WantedBy=multi-user.target
+

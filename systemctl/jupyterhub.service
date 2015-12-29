@@ -1,0 +1,12 @@
+[Unit]
+Description=Run a JupyterHub server
+After=network.target
+
+[Service]
+User=jupyterhub
+Type=oneshot
+ExecStart=/bin/true
+ExecStartPost=/bin/bash -c "export PATH=/home/cburr/miniconda/bin/:$PATH && source activate jupyter && jupyterhub -f /etc/jupyterhub/jupyterhub_config.py"
+
+[Install]
+WantedBy=multi-user.target
